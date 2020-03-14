@@ -2,7 +2,6 @@ module Justifill where
 
 import Prelude
 
-import Data.Maybe (Maybe)
 import Justifill.Fillable (class Fillable, fill)
 import Justifill.Justifiable (class Justifiable, justify)
 
