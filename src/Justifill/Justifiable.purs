@@ -15,7 +15,7 @@ import Record.Builder as Builder
 import Type.Row as R
 import Type.RowList as RL
 
-class Justifiable unjust just where
+class Justifiable unjust just | just -> unjust where
   justify ∷ unjust -> just
 
 instance justifiableRecord ::
