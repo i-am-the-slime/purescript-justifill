@@ -2,6 +2,7 @@ module Test.Main where
 
 import Prelude
 
+import Data.Either (Either(..))
 import Data.Maybe (Maybe(..))
 import Effect (Effect)
 import Effect.Aff (launchAff_)
@@ -40,6 +41,10 @@ spec = do
       justify { x: 4 } `shouldEqual` { x: 4 }
       justify { x: 4 } `shouldEqual` { x: Just 4 }
       justify { x: [1,2] } `shouldEqual` { x: Just ([1,2]) }
+    it "works for monads" do
+      justify { x: pure 3 } `shouldEqual` { x: Just ([3]) }
+      justify { x: pure 3 } `shouldEqual` { x: Just 3 }
+      justify { x: (pure 3) } `shouldEqual` { x: Right 3 :: Either String Int }
   describe "justifill" do
     it "wraps values in Just and fills records" do
       justifill {} `shouldEqual` { x: Nothing :: Maybe Int }
@@ -51,4 +56,4 @@ spec = do
       -- justifill {x:(Nothing :: Maybe String)} `shouldEqual` {x:Nothing :: (Maybe Int)}
     it "works for records that are already complete" do
       justifill { a: 12, b: Just 4 } `shouldEqual` { a: 12, b: Just 4}
-      justifill { a: 12, b: Nothing } `shouldEqual` { a: 12, b: Just 4}
+      justifill { a: 12, b: Nothing } `shouldEqual` { a: 12, b: Nothing :: Maybe Int }

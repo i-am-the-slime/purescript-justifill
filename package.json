@@ -1,0 +1,30 @@
+{
+  "name": "purescript-justifill",
+  "version": "1.0.0",
+  "description": "This module provides three interesting functions:     - `fill` Which adds `Nothings` to records with missing fields     - `justify` Which turns non-`Maybe` values into `Just`s     -  and `justifill` which combines the two",
+  "main": "index.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "spago test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/i-am-the-slime/purescript-justifill.git"
+  },
+  "keywords": [
+    "purescript",
+    "rowtypes"
+  ],
+  "author": "mark.eibes@gmail.com",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/i-am-the-slime/purescript-justifill/issues"
+  },
+  "homepage": "https://github.com/i-am-the-slime/purescript-justifill#readme",
+  "devDependencies": {
+    "purescript": "^0.13.6",
+    "spago": "^0.14.0"
+  }
+}

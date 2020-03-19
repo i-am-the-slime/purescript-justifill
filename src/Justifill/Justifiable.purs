@@ -45,13 +45,10 @@ else instance justifiableBackwards :: JustifiableBackwards b a => Justifiable b 
 class JustifiableBackwards unjust just | just -> unjust where
   justifyBackwards :: unjust -> just
 
-instance justifyBackwardsArraySame :: JustifiableBackwards (Array a) (Array a)  where
-  justifyBackwards = identity
-else
-instance justifyBackwardsMaybeArray :: JustifiableBackwards (Array a) (Maybe (Array a))  where
+instance justifyBackwardsMaybeArray :: JustifiableBackwards (f a) (Maybe (f a))  where
   justifyBackwards = Just
 else
-instance justifyBackwardsMaybe :: JustifiableBackwards (Maybe a) (Maybe a)  where
+instance justifyBackwardsMaybe :: JustifiableBackwards a a where
   justifyBackwards = identity 
 
 class JustifiableFields (xs ∷ RL.RowList) (row ∷ #Type) (from ∷ #Type) (to ∷ #Type) | xs -> row from to where

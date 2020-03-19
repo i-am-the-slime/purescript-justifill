@@ -1,3 +1,5 @@
 {
-    "purescript.addSpagoSources": true
+    "purescript.addSpagoSources": true,
+    "files.insertFinalNewline": true,
+    "files.trimFinalNewlines": true
 }
