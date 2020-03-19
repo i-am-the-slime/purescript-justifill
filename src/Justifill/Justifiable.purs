@@ -6,6 +6,8 @@ module Justifill.Justifiable
   ) where
 
 import Prelude
+
+import Data.Array (null)
 import Data.Maybe (Maybe(..))
 import Data.Symbol (class IsSymbol, SProxy(..), reflectSymbol)
 import Prim.RowList (class RowToList)
@@ -15,7 +17,7 @@ import Record.Builder as Builder
 import Type.Row as R
 import Type.RowList as RL
 
-class Justifiable unjust just | just -> unjust where
+class Justifiable unjust just where
   justify ∷ unjust -> just
 
 instance justifiableRecord ::
@@ -27,10 +29,10 @@ instance justifiableRecord ::
     where
     builder ∷ Builder.Builder (Record ()) (Record just)
     builder = getFieldsJustified (RL.RLProxy ∷ RL.RLProxy xs) x
-else instance justifiableAToMaybe :: Justifiable a (Maybe a) where
-  justify = Just
 else instance justifiableA :: Justifiable a a where
   justify = identity
+else instance justifiableAToMaybe :: Justifiable a (Maybe a) where
+  justify = Just
 
 class JustifiableFields (xs ∷ RL.RowList) (row ∷ #Type) (from ∷ #Type) (to ∷ #Type) | xs -> row from to where
   getFieldsJustified ∷ RL.RLProxy xs -> Record row -> Builder (Record from) (Record to)

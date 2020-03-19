@@ -35,11 +35,12 @@ spec = do
       justify 4 `shouldEqual` 4
       justify 4 `shouldEqual` (Just 4)
       justify [4] `shouldEqual` (Just [4])
-      justify [] `shouldEqual` (Just ([]:: Array Int))
+      -- requires type annotation :(
+      justify ([] :: _ Int) `shouldEqual` (Just ([]:: Array Int))
       justify { x: 4 } `shouldEqual` { x: 4 }
       justify { x: 4 } `shouldEqual` { x: Just 4 }
       justify { x: [1,2] } `shouldEqual` { x: Just ([1,2]) }
   describe "justifill" do
     it "wraps values in Just and fills records" do
       justifill {} `shouldEqual` { x: Nothing :: Maybe Int }
-      justifill { name: "Mark", id: [] } `shouldEqual` { name: Just "Mark", age: Nothing :: Maybe Int, id: [] :: Array Int }
+      justifill { name: "Mark", id: [] :: _ Int } `shouldEqual` { name: Just "Mark", age: Nothing :: Maybe Int, id: [] :: Array Int }
