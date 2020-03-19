@@ -15,6 +15,7 @@ import Prim.RowList (class RowToList)
 import Record as Record
 import Record.Builder (Builder)
 import Record.Builder as Builder
+import Type.Equality (class TypeEquals)
 import Type.Row as R
 import Type.RowList as RL
 
@@ -45,10 +46,13 @@ else instance justifiableBackwards :: JustifiableBackwards b a => Justifiable b 
 class JustifiableBackwards unjust just | just -> unjust where
   justifyBackwards :: unjust -> just
 
-instance justifyBackwardsMaybeArray :: JustifiableBackwards (f a) (Maybe (f a))  where
+instance justifyBackwardsMaybeArray :: JustifiableBackwards (Array a) (Maybe (Array a))  where
   justifyBackwards = Just
 else
-instance justifyBackwardsMaybe :: JustifiableBackwards a a where
+instance justifyBackwardsMaybeArray2 :: JustifiableBackwards (Array a) (Array a)  where
+  justifyBackwards = identity
+else
+instance justifyBackwardsHmm :: JustifiableBackwards (m a) (m a) where
   justifyBackwards = identity 
 
 class JustifiableFields (xs ∷ RL.RowList) (row ∷ #Type) (from ∷ #Type) (to ∷ #Type) | xs -> row from to where

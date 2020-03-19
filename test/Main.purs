@@ -4,11 +4,15 @@ import Prelude
 
 import Data.Either (Either(..))
 import Data.Maybe (Maybe(..))
+import Data.Symbol (SProxy(..))
 import Effect (Effect)
 import Effect.Aff (launchAff_)
 import Justifill (justifill)
-import Justifill.Fillable (fill)
-import Justifill.Justifiable (justify)
+import Justifill.Fillable (class Fillable, fill)
+import Justifill.Justifiable (class Justifiable, justify)
+import Prim.Row (class Lacks)
+import Prim.RowList (class RowToList)
+import Record (insert)
 import Test.Spec (Spec, describe, it)
 import Test.Spec.Assertions (shouldEqual)
 import Test.Spec.Reporter (consoleReporter)
@@ -44,16 +48,42 @@ spec = do
     it "works for monads" do
       justify { x: pure 3 } `shouldEqual` { x: Just ([3]) }
       justify { x: pure 3 } `shouldEqual` { x: Just 3 }
-      justify { x: (pure 3) } `shouldEqual` { x: Right 3 :: Either String Int }
+      justify { x: pure 3 } `shouldEqual` { x: Right 3 :: Either String Int }
   describe "justifill" do
     it "wraps values in Just and fills records" do
       justifill {} `shouldEqual` { x: Nothing :: Maybe Int }
       justifill { name: "Mark", id: [] :: _ Int } `shouldEqual` { name: Just "Mark", age: Nothing :: Maybe Int, id: [] :: Array Int }
+      justifill { x: "Hi", y: Just 4 } `shouldEqual` { x: Just "Hi", y: Just 4, c: Nothing :: (Maybe (Array String)) }
     -- These should all not compile!
     -- it "doesn't work for empty Arrays of the wrong type" do
-      -- justifill ([] :: Array String) `shouldEqual` ([] :: Array Int)
+      -- justifill {x: ([] :: Array String)} `shouldEqual` {x: ([] :: Array Int)}
       -- justifill {x:([] :: Array String)} `shouldEqual` {x:Nothing :: (Maybe (Array Int))}
       -- justifill {x:(Nothing :: Maybe String)} `shouldEqual` {x:Nothing :: (Maybe Int)}
     it "works for records that are already complete" do
+      justifill { a: "heinz" } `shouldEqual` { a: Just "heinz" }
+      justifill { a: 12 } `shouldEqual` { a: 12, b: Nothing :: (Maybe String)}
       justifill { a: 12, b: Just 4 } `shouldEqual` { a: 12, b: Just 4}
       justifill { a: 12, b: Nothing } `shouldEqual` { a: 12, b: Nothing :: Maybe Int }
+    it "works with this weird example" do
+      bespoke { a: "Hi" } [1,2,3] `shouldEqual` { a: Just "Hi", kids: [1,2,3]}
+
+
+type Kids2 r
+  = ( kids ∷ Array Int | r )
+
+bespoke ∷
+  ∀ to thru from.
+  Lacks "kids" from =>
+  Justifiable { | Kids2 from } { | Kids2 thru } =>
+  Fillable { | Kids2 thru } { | Kids2 to } =>
+  -- arguments
+  Record from ->
+  Array Int ->
+  Record (Kids2 to)
+bespoke partial kids = props
+  where
+  props ∷ Record (Kids2 to)
+  props = justifill partialWithKids
+  partialWithKids ∷ Record (Kids2 from)
+  partialWithKids = insert _kids kids partial
+  _kids = SProxy ∷ SProxy "kids"
