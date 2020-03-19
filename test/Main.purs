@@ -35,8 +35,8 @@ spec = do
       justify 4 `shouldEqual` 4
       justify 4 `shouldEqual` (Just 4)
       justify [4] `shouldEqual` (Just [4])
-      -- requires type annotation :(
-      justify ([] :: _ Int) `shouldEqual` (Just ([]:: Array Int))
+      justify [] `shouldEqual` ([] :: Array Int)
+      justify [] `shouldEqual` (Just ([] :: Array Int))
       justify { x: 4 } `shouldEqual` { x: 4 }
       justify { x: 4 } `shouldEqual` { x: Just 4 }
       justify { x: [1,2] } `shouldEqual` { x: Just ([1,2]) }
@@ -44,3 +44,11 @@ spec = do
     it "wraps values in Just and fills records" do
       justifill {} `shouldEqual` { x: Nothing :: Maybe Int }
       justifill { name: "Mark", id: [] :: _ Int } `shouldEqual` { name: Just "Mark", age: Nothing :: Maybe Int, id: [] :: Array Int }
+    -- These should all not compile!
+    -- it "doesn't work for empty Arrays of the wrong type" do
+      -- justifill ([] :: Array String) `shouldEqual` ([] :: Array Int)
+      -- justifill {x:([] :: Array String)} `shouldEqual` {x:Nothing :: (Maybe (Array Int))}
+      -- justifill {x:(Nothing :: Maybe String)} `shouldEqual` {x:Nothing :: (Maybe Int)}
+    it "works for records that are already complete" do
+      justifill { a: 12, b: Just 4 } `shouldEqual` { a: 12, b: Just 4}
+      justifill { a: 12, b: Nothing } `shouldEqual` { a: 12, b: Just 4}

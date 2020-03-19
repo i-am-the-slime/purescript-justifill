@@ -1,13 +1,14 @@
 module Justifill.Justifiable
   ( class Justifiable
+  , class JustifiableBackwards
   , class JustifiableFields
   , getFieldsJustified
   , justify
+  , justifyBackwards
   ) where
 
 import Prelude
 
-import Data.Array (null)
 import Data.Maybe (Maybe(..))
 import Data.Symbol (class IsSymbol, SProxy(..), reflectSymbol)
 import Prim.RowList (class RowToList)
@@ -29,10 +30,29 @@ instance justifiableRecord ::
     where
     builder ∷ Builder.Builder (Record ()) (Record just)
     builder = getFieldsJustified (RL.RLProxy ∷ RL.RLProxy xs) x
-else instance justifiableA :: Justifiable a a where
-  justify = identity
 else instance justifiableAToMaybe :: Justifiable a (Maybe a) where
   justify = Just
+else instance justifiableA :: Justifiable a a where
+  justify = identity
+--| In case of empty Arrays or Nothing values, it helps inference to go from the
+--| add a functional dependency from the output to the input type
+--| However, that messess with the more basic cases (going from a -> a fails to find an instance)
+--| Therefore, we only fall back to this at this point
+--| Note how b and a are unrelated types here
+else instance justifiableBackwards :: JustifiableBackwards b a => Justifiable b a where
+  justify = justifyBackwards
+
+class JustifiableBackwards unjust just | just -> unjust where
+  justifyBackwards :: unjust -> just
+
+instance justifyBackwardsArraySame :: JustifiableBackwards (Array a) (Array a)  where
+  justifyBackwards = identity
+else
+instance justifyBackwardsMaybeArray :: JustifiableBackwards (Array a) (Maybe (Array a))  where
+  justifyBackwards = Just
+else
+instance justifyBackwardsMaybe :: JustifiableBackwards (Maybe a) (Maybe a)  where
+  justifyBackwards = identity 
 
 class JustifiableFields (xs ∷ RL.RowList) (row ∷ #Type) (from ∷ #Type) (to ∷ #Type) | xs -> row from to where
   getFieldsJustified ∷ RL.RLProxy xs -> Record row -> Builder (Record from) (Record to)
