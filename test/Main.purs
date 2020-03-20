@@ -1,6 +1,7 @@
 module Test.Main where
 
 import Prelude
+
 import Data.Either (Either(..))
 import Data.Foldable (fold)
 import Data.Maybe (Maybe(..), fromMaybe)
@@ -9,7 +10,7 @@ import Effect (Effect)
 import Effect.Aff (launchAff_)
 import Justifill (justifill)
 import Justifill.Fillable (class Fillable, fill)
-import Justifill.Justifiable (class Justifiable, justify)
+import Justifill.Justifiable (class Justifiable, class JustifiableFields, justify)
 import Prim.Row (class Lacks)
 import Prim.RowList (class RowToList)
 import Record (insert)
@@ -81,14 +82,17 @@ type Kids a
   = ( kids ∷ Array Int | a )
 
 f ∷
-  ∀ to thru from.
+  ∀ to thru from kidsFromRL.
   Lacks "kids" from =>
   Justifiable { | Kids from } { | Kids thru } =>
   Fillable { | Kids thru } { | Kids to } =>
+  -- This is necessary
+  JustifiableFields kidsFromRL (Kids from) () (Kids thru) =>
+  RowToList (Kids from) kidsFromRL =>
   Record from ->
   Array Int ->
   Record (Kids to)
-f = f'
+f a b = f' a b
 
 f' ∷
   ∀ to thru from.
