@@ -1,9 +1,9 @@
 module Justifill where
 
 import Prelude
-
 import Justifill.Fillable (class Fillable, fill)
 import Justifill.Justifiable (class Justifiable, justify)
+import Prim.Row (class Nub, class Union)
 
 --| Completes records by wrapping provided optional keys in `Just`
 --| and filling out non-provided keys with `Nothing`s

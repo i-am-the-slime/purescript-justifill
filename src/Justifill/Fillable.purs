@@ -15,7 +15,7 @@ import Record.Builder as Builder
 import Type.Row as R
 import Type.RowList as RL
 
-class Fillable partial complete | complete -> partial where
+class Fillable partial complete where
   fill ∷ partial -> complete
 
 class FillableFields (xs ∷ RL.RowList) (from ∷ #Type) (to ∷ #Type) | xs -> from to where
