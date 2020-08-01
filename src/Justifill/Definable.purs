@@ -4,8 +4,8 @@ module Justifill.Definable
   , getFieldsDefined
   , define
   , defined
-  , undefined
-  , UndefinedOr
+  , notAFunction
+  , UndefOr
   ) where
 
 import Prelude
@@ -17,37 +17,37 @@ import Record.Builder (Builder)
 import Record.Builder as Builder
 import Type.Row as R
 import Type.RowList as RL
-import Undefined as Undefined
+import Undefined (undefined)
 import Unsafe.Coerce (unsafeCoerce)
 
-foreign import data UndefinedOr :: Type -> Type
-undefined :: forall a. UndefinedOr a
-undefined = unsafeCoerce Undefined.undefined 
-defined :: forall a. a -> UndefinedOr a
+foreign import data UndefOr :: Type -> Type
+notAFunction :: forall a. UndefOr a
+notAFunction = unsafeCoerce undefined
+defined :: forall a. a -> UndefOr a
 defined = unsafeCoerce
-foreign import isUndefined :: forall a. UndefinedOr a -> Boolean
-instance eqUndefinedOr :: (Eq a) => Eq (UndefinedOr a) where
+foreign import isUndefined :: forall a. UndefOr a -> Boolean
+instance eqUndefOr :: (Eq a) => Eq (UndefOr a) where
   eq x y = case isUndefined x, isUndefined y of
     true, true -> true
     false, true -> false
     true, false -> false
     false, false -> ((unsafeCoerce x) :: a) == ((unsafeCoerce y) :: a)
-instance showUndefinedOr ::  (Show a) => Show (UndefinedOr a) where
-  show x = if isUndefined x then "undefined" else show "(defined " <> show ((unsafeCoerce x) :: a) <> ")"
+instance showUndefOr ::  (Show a) => Show (UndefOr a) where
+  show x = if isUndefined x then "notAFunction" else show "(defined " <> show ((unsafeCoerce x) :: a) <> ")"
   
-class Definable undefined defined where
-  define ∷ undefined -> defined
+class Definable notAFunction defined where
+  define ∷ notAFunction -> defined
 
 instance definableRecord ::
-  ( RowToList undefined xs
-  , DefinableFields xs undefined () defined
+  ( RowToList notAFunction xs
+  , DefinableFields xs notAFunction () defined
   ) =>
-  Definable (Record undefined) (Record defined) where
+  Definable (Record notAFunction) (Record defined) where
   define x = Builder.build builder {}
     where
     builder ∷ Builder.Builder (Record ()) (Record defined)
     builder = getFieldsDefined (RL.RLProxy ∷ RL.RLProxy xs) x
-else instance definableAToUndefinedOr :: Definable a (UndefinedOr a) where
+else instance definableAToUndefOr :: Definable a (UndefOr a) where
   define = defined
 else instance definableA :: Definable a a where
   define x = x

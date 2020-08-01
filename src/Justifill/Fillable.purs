@@ -8,7 +8,7 @@ module Justifill.Fillable
 import Prelude
 
 import Data.Symbol (class IsSymbol, SProxy(..), reflectSymbol)
-import Justifill.Definable (UndefinedOr, undefined)
+import Justifill.Definable (UndefOr, notAFunction)
 import Prim.Row (class Nub, class Union)
 import Prim.RowList (class RowToList)
 import Record.Builder (Builder)
@@ -42,12 +42,12 @@ instance fillableFieldsCons ::
   ( IsSymbol name
   , FillableFields tail from from'
   , R.Lacks name from'
-  , R.Cons name (UndefinedOr ty) from' to
+  , R.Cons name (UndefOr ty) from' to
   ) =>
-  FillableFields (RL.Cons name (UndefinedOr ty) tail) from to where
+  FillableFields (RL.Cons name (UndefOr ty) tail) from to where
   getFillableFields _ = first <<< rest
     where
-    first = Builder.insert nameP undefined
+    first = Builder.insert nameP notAFunction
     rest = getFillableFields tailP
     nameP = SProxy ∷ SProxy name
     tailP = RL.RLProxy ∷ RL.RLProxy tail
