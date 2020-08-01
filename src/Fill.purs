@@ -1,8 +1,9 @@
-module Justifill where
+module Fill where
 
-import Prelude
-import Justifill.Fillable (class Fillable, fill)
-import Justifill.Justifiable (class Justifiable, justify)
+
+import Justifill.Definable (class Definable)
+import Justifill.Fillable (class Fillable)
+import Unsafe.Coerce (unsafeCoerce)
 
 --| Completes records by wrapping provided optional keys in `Just`
 --| and filling out non-provided keys with `Nothing`s
@@ -10,9 +11,9 @@ import Justifill.Justifiable (class Justifiable, justify)
 --| x :: { name :: Maybe String, age :: Maybe Int, id :: Int }
 --| x = justifill { name: "Mark", id: 12 }
 --| -- { name: Just "Mark", age: Nothing, id: 12 }
-justifill ∷
+full ∷
   ∀ from thru to.
   Fillable { | thru } { | to } =>
-  Justifiable { | from } { | thru } =>
+  Definable { | from } { | thru } =>
   { | from } -> { | to }
-justifill = (fill ∷ { | thru } -> { | to }) <<< (justify ∷ { | from } -> { | thru })
+full = unsafeCoerce
