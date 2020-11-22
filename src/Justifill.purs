@@ -12,19 +12,19 @@ import Type.Proxy (Proxy)
 --| x = justifill { name: "Mark", id: 12 }
 --| -- { name: Just "Mark", age: Nothing, id: 12 }
 justifill ∷
-  ∀ from thru to.
-  Fillable { | thru } { | to } =>
-  Justifiable { | from } { | thru } =>
+  ∀ from via to.
+  Fillable { | via } { | to } =>
+  Justifiable { | from } { | via } =>
   { | from } -> { | to }
-justifill = (fill ∷ { | thru } -> { | to }) <<< (justify ∷ { | from } -> { | thru })
+justifill = (fill ∷ { | via } -> { | to }) <<< (justify ∷ { | from } -> { | via })
 
 --| A version of justifill that helps type inference along
 --| by receiving a `Proxy` of the `thru` type
 --| This is useful if you write a wrapper around justifill because
 --| it allows to write simpler type annotations
-justifillExplicit ∷
-  ∀ from thru to.
-  Fillable { | thru } { | to } =>
-  Justifiable { | from } { | thru } =>
-  Proxy { | thru } -> { | from } -> { | to }
-justifillExplicit _ = (fill ∷ { | thru } -> { | to }) <<< (justify ∷ { | from } -> { | thru })
+justifillVia ∷
+  ∀ from via to.
+  Fillable { | via } { | to } =>
+  Justifiable { | from } { | via } =>
+  Proxy { | via } -> { | from } -> { | to }
+justifillVia _ = (fill ∷ { | via } -> { | to }) <<< (justify ∷ { | from } -> { | via })
