@@ -1,0 +1,21 @@
+{
+    "name": "purescript-justifill",
+    "license": [
+        "MIT"
+    ],
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/i-am-the-slime/purescript-justifill.git"
+    },
+    "ignore": [
+        "**/.*",
+        "node_modules",
+        "bower_components",
+        "output"
+    ],
+    "dependencies": {
+        "purescript-record": "^v2.0.2",
+        "purescript-typelevel-prelude": "^v5.0.2",
+        "purescript-spec": "^4.0.1"
+    }
+}
