@@ -18,7 +18,7 @@ import Type.RowList as RL
 class Fillable partial complete where
   fill ∷ partial -> complete
 
-class FillableFields (xs ∷ RL.RowList) (from ∷ #Type) (to ∷ #Type) | xs -> from to where
+class FillableFields (xs ∷ RL.RowList Type) (from ∷ Row Type) (to ∷ Row Type) | xs -> from to where
   getFillableFields ∷
     RL.RLProxy xs ->
     Builder (Record from) (Record to)
