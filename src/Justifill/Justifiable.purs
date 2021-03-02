@@ -38,7 +38,7 @@ else instance justifiableA :: Justifiable a a where
 --| Therefore, we only fall back to this at this point
 --| Note how b and a are unrelated types here
 
-class JustifiableFields (xs ∷ RL.RowList) (row ∷ #Type) (from ∷ #Type) (to ∷ #Type) | xs -> row from to where
+class JustifiableFields (xs ∷ RL.RowList Type) (row ∷ Row Type) (from ∷ Row Type) (to ∷ Row Type) | xs -> row from to where
   getFieldsJustified ∷ RL.RLProxy xs -> Record row -> Builder (Record from) (Record to)
 
 -- Base case, nothing is in the row list
