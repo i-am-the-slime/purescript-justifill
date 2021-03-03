@@ -105,29 +105,10 @@ in  upstream
 -------------------------------
 -}
 let upstream =
-      https://github.com/purescript/package-sets/releases/download/psc-0.14.0/packages.dhall sha256:710b53c085a18aa1263474659daa0ae15b7a4f453158c4f60ab448a6b3ed494e
+      https://github.com/purescript/package-sets/releases/download/psc-0.14.0-20210302/packages.dhall sha256:20cc5b89cf15433623ad6f250f112bf7a6bd82b5972363ecff4abf1febb02c50
 
 let overrides = {=}
 
-let additions =
-      { spec =
-          { dependencies =
-            [ "avar"
-            , "console"
-            , "aff"
-            , "exceptions"
-            , "strings"
-            , "prelude"
-            , "transformers"
-            , "foldable-traversable"
-            , "pipes"
-            , "ansi"
-            , "fork"
-            , "now"
-            ]
-          , repo = "https://github.com/purescript-spec/purescript-spec.git"
-          , version = "v5.0.0"
-          }
-      }
+let additions = {=}
 
 in  upstream // overrides // additions
