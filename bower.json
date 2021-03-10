@@ -1,7 +1,7 @@
 {
     "name": "purescript-justifill",
     "license": [
-        "Apache License v2"
+        "Apache-2.0"
     ],
     "repository": {
         "type": "git",
