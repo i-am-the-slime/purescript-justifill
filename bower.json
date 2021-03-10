@@ -1,11 +1,11 @@
 {
     "name": "purescript-justifill",
     "license": [
-        "MIT"
+        "Apache License v2"
     ],
     "repository": {
         "type": "git",
-        "url": "https://github.com/i-am-the-slime/purescript-justifill.git"
+        "url": "git@github.com:i-am-the-slime/purescript-justifill.git"
     },
     "ignore": [
         "**/.*",
@@ -14,8 +14,8 @@
         "output"
     ],
     "dependencies": {
-        "purescript-record": "^v2.0.2",
-        "purescript-typelevel-prelude": "^v5.0.2",
-        "purescript-spec": "^4.0.1"
+        "purescript-record": "^v3.0.0",
+        "purescript-spec": "^v5.0.0",
+        "purescript-typelevel-prelude": "^v6.0.0"
     }
 }
