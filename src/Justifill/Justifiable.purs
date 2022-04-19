@@ -8,11 +8,12 @@ module Justifill.Justifiable
 import Prelude
 
 import Data.Maybe (Maybe(..))
-import Data.Symbol (class IsSymbol, SProxy(..), reflectSymbol)
+import Data.Symbol (class IsSymbol, reflectSymbol)
 import Prim.RowList (class RowToList)
 import Record as Record
 import Record.Builder (Builder)
 import Record.Builder as Builder
+import Type.Proxy (Proxy(..))
 import Type.Row as R
 import Type.RowList as RL
 
@@ -27,7 +28,7 @@ instance justifiableRecord ::
   justify x = Builder.build builder {}
     where
     builder ∷ Builder.Builder (Record ()) (Record just)
-    builder = getFieldsJustified (RL.RLProxy ∷ RL.RLProxy xs) x
+    builder = getFieldsJustified (Proxy ∷ Proxy xs) x
 else instance justifiableAToMaybe :: Justifiable a (Maybe a) where
   justify = Just
 else instance justifiableA :: Justifiable a a where
@@ -39,7 +40,7 @@ else instance justifiableA :: Justifiable a a where
 --| Note how b and a are unrelated types here
 
 class JustifiableFields (xs ∷ RL.RowList Type) (row ∷ Row Type) (from ∷ Row Type) (to ∷ Row Type) | xs -> row from to where
-  getFieldsJustified ∷ RL.RLProxy xs -> Record row -> Builder (Record from) (Record to)
+  getFieldsJustified ∷ Proxy xs -> Record row -> Builder (Record from) (Record to)
 
 -- Base case, nothing is in the row list
 instance justifiableFieldsNil :: JustifiableFields RL.Nil row () () where
@@ -59,6 +60,6 @@ instance justifiableFieldsCons ::
     first = Builder.insert nameP (justify val)
     val = Record.get nameP r
     rest = getFieldsJustified tailP r
-    nameP = SProxy ∷ SProxy name
-    tailP = RL.RLProxy ∷ RL.RLProxy tail
+    nameP = Proxy ∷ Proxy name
+    tailP = Proxy ∷ Proxy tail
     name = reflectSymbol nameP
