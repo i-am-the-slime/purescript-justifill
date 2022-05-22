@@ -14,8 +14,8 @@
         "output"
     ],
     "dependencies": {
-        "purescript-record": "^v3.0.0",
-        "purescript-spec": "^v5.0.0",
-        "purescript-typelevel-prelude": "^v6.0.0"
+        "purescript-record": "^v4.0.0",
+        "purescript-spec": "^v7.0.0",
+        "purescript-typelevel-prelude": "^v7.0.0"
     }
 }
