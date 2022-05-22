@@ -8,7 +8,7 @@ module Justifill.Fillable
 import Prelude
 
 import Data.Maybe (Maybe(..))
-import Data.Symbol (class IsSymbol, reflectSymbol)
+import Data.Symbol (class IsSymbol)
 import Prim.Row (class Nub, class Union)
 import Prim.RowList (class RowToList)
 import Record.Builder (Builder)
@@ -21,9 +21,9 @@ class Fillable partial complete where
   fill ∷ partial -> complete
 
 class FillableFields (xs ∷ RL.RowList Type) (from ∷ Row Type) (to ∷ Row Type) | xs -> from to where
-  getFillableFields ∷
-    Proxy xs ->
-    Builder (Record from) (Record to)
+  getFillableFields
+    ∷ Proxy xs
+    -> Builder (Record from) (Record to)
 
 instance fillableRecord ::
   ( RowToList missing missingList
@@ -52,4 +52,3 @@ instance fillableFieldsCons ::
     rest = getFillableFields tailP
     nameP = Proxy ∷ Proxy name
     tailP = Proxy ∷ Proxy tail
-    name = reflectSymbol nameP

@@ -8,7 +8,7 @@ module Justifill.Justifiable
 import Prelude
 
 import Data.Maybe (Maybe(..))
-import Data.Symbol (class IsSymbol, reflectSymbol)
+import Data.Symbol (class IsSymbol)
 import Prim.RowList (class RowToList)
 import Record as Record
 import Record.Builder (Builder)
@@ -33,6 +33,7 @@ else instance justifiableAToMaybe :: Justifiable a (Maybe a) where
   justify = Just
 else instance justifiableA :: Justifiable a a where
   justify x = x
+
 --| In case of empty Arrays or Nothing values, it helps inference to go from the
 --| add a functional dependency from the output to the input type
 --| However, that messess with the more basic cases (going from a -> a fails to find an instance)
@@ -62,4 +63,3 @@ instance justifiableFieldsCons ::
     rest = getFieldsJustified tailP r
     nameP = Proxy ∷ Proxy name
     tailP = Proxy ∷ Proxy tail
-    name = reflectSymbol nameP
