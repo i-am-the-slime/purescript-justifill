@@ -5,7 +5,7 @@
     ],
     "repository": {
         "type": "git",
-        "url": "git@github.com:i-am-the-slime/purescript-justifill.git"
+        "url": "https://github.com/i-am-the-slime/purescript-justifill.git"
     },
     "ignore": [
         "**/.*",
