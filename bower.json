@@ -5,7 +5,7 @@
     ],
     "repository": {
         "type": "git",
-        "url": "git@github.com:i-am-the-slime/purescript-justifill.git"
+        "url": "https://github.com/i-am-the-slime/purescript-justifill.git"
     },
     "ignore": [
         "**/.*",
@@ -14,6 +14,10 @@
         "output"
     ],
     "dependencies": {
+        "purescript-aff": "^v7.0.0",
+        "purescript-effect": "^v4.0.0",
+        "purescript-maybe": "^v6.0.0",
+        "purescript-prelude": "^v6.0.0",
         "purescript-record": "^v4.0.0",
         "purescript-spec": "^v7.0.0",
         "purescript-typelevel-prelude": "^v7.0.0"
