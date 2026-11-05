@@ -1,0 +1,20 @@
+package:
+  name: justifill
+  publish:
+    version: 0.5.1
+    license: Apache-2.0 AND MIT
+    location:
+      githubOwner: i-am-the-slime
+      githubRepo: purescript-justifill
+  dependencies:
+    - maybe: ">=6.0.0 <7.0.0"
+    - prelude: ">=6.0.0 <7.0.0"
+    - record: ">=4.0.0 <5.0.0"
+    - typelevel-prelude: ">=7.0.0 <8.0.0"
+  test:
+    main: Test.Main
+    dependencies:
+      - aff: ">=7.0.0 <8.0.0"
+      - effect: ">=4.0.0 <5.0.0"
+      - spec: ">=7.0.0 <8.0.0"
+workspace: {}
